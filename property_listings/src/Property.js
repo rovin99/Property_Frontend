@@ -37,7 +37,7 @@ function Property({ property }) {
     <motion.div className="property" variants={cardVariants} initial="hidden" animate="visible">
       <Link to={`/property/${property.id}`} style={{ textDecoration: 'none' }}>
         <Card>
-          <Card.Img variant="top" src={'https://images.app.goo.gl/eZnodztCexdQnebQ6'} alt={property.pic} />
+          <Card.Img variant="top" src={'http://www.palmares.lemondeduchiffre.fr/images/joomlart/demo/default.jpg'} alt={property.pic} />
         
           <Card.Body>
             <Card.Title>{property.name}</Card.Title>

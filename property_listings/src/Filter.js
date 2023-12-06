@@ -3,16 +3,22 @@ import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { Form } from 'react-bootstrap';
 import { Accordion } from 'react-bootstrap';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Filter({ data, selectedFilters, onFilterChange, filteredDataCount }) {
   const uniqueLocations = [...new Set(data.map((item) => item.location))];
   const uniquePropertyTypes = [...new Set(data.map((item) => item.type))];
-
+  const [dateFilter, setDateFilter] = useState(null);
   uniqueLocations.sort();
   uniquePropertyTypes.sort();
 
   const [availableCities, setAvailableCities] = useState([]);
+  
+  useEffect(() => {
+    onFilterChange('availablefrom', dateFilter ? [dateFilter.toISOString()] : []);
+  }, [dateFilter, onFilterChange]);
 
   useEffect(() => {
     const selectedLocation = selectedFilters.location;
@@ -31,7 +37,6 @@ function Filter({ data, selectedFilters, onFilterChange, filteredDataCount }) {
     setAvailableCities(allCities);
   }, [selectedFilters.location, data]);
 
-  
   const minPrice = Math.min(...data.map((item) => item.price));
   const maxPrice = Math.max(...data.map((item) => item.price));
 
@@ -49,21 +54,17 @@ function Filter({ data, selectedFilters, onFilterChange, filteredDataCount }) {
     onFilterChange(filterType, values);
   };
 
- 
   const [priceValues, setPriceValues] = useState([minPrice, maxPrice]);
 
   const handleResetFilters = () => {
-    
     onFilterChange('location', []);
-    
     onFilterChange('price', [minPrice, maxPrice]);
     onFilterChange('type', []);
-
-   
-    document.getElementById('locationDropdown').selectedIndex = 0;
-
+    onFilterChange('availablefrom', []); 
     
+    document.getElementById('locationDropdown').selectedIndex = 0;
     setPriceValues([minPrice, maxPrice]);
+    setDateFilter(null); 
   };
 
   return (
@@ -90,7 +91,14 @@ function Filter({ data, selectedFilters, onFilterChange, filteredDataCount }) {
           </Accordion.Item>
         </Accordion>
 
-        
+        <Form.Label>Available from</Form.Label>
+            <DatePicker
+              selected={dateFilter}
+              onChange={(date) => setDateFilter(date)}
+              className="form-control"
+              dateFormat="yyyy-MM-dd"
+        />
+        <Form.Group className="Price">
         <div className="form-group">
           <label>Price Range: {priceValues[0]} - {priceValues[1]}</label>
           <Slider
@@ -104,6 +112,8 @@ function Filter({ data, selectedFilters, onFilterChange, filteredDataCount }) {
             }}
           />
         </div>
+          
+        </Form.Group>
         <Accordion>
           <Accordion.Item eventKey="0" className="accordion-item">
             <Accordion.Header className="accordion-header">Property Type </Accordion.Header>

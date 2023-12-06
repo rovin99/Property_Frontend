@@ -1,12 +1,11 @@
-// App.js
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import Property from './Property';
 import Filter from './Filter';
-//import LoadingAnimation from './LoadingAnimation';
+
 import { motion } from 'framer-motion';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-//import PropertyDetails from './PropertyDetails';
+import { BrowserRouter as Router, Route, Routes,Link } from 'react-router-dom';
+import { Navbar, Container, Nav, Button } from 'react-bootstrap';
 
 function App() {
   const [data, setData] = useState([]);
@@ -24,7 +23,10 @@ function App() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/list-properties'); // Replace with your property API endpoint
+      const response = await fetch('https://property-backend-zew1.onrender.com/api/list-properties');
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
       const jsonData = await response.json();
       setData(jsonData.data);
       setFilteredData(jsonData.data);
@@ -44,13 +46,17 @@ function App() {
 
   const filterAndSortData = () => {
     const filteredProperties = data.filter((property) => {
-      const isPriceInRange = property.price >= selectedFilters.price[0] && property.price <= selectedFilters.price[1];
+      const isPriceInRange =
+        property.price >= selectedFilters.price[0] && property.price <= selectedFilters.price[1];
+      const isAvailableFrom =
+        selectedFilters.availablefrom.length === 0 ||
+        selectedFilters.availablefrom.some((date) => new Date(date) <= new Date(property.availablefrom));
 
       return (
         (selectedFilters.location.length === 0 || selectedFilters.location.includes(property.location)) &&
         (selectedFilters.type.length === 0 || selectedFilters.type.includes(property.type)) &&
-        // (selectedFilters.availablefrom.length === 0 || selectedFilters.availablefrom.includes(property.availablefrom)) &&
-        isPriceInRange
+        isPriceInRange &&
+        isAvailableFrom
       );
     });
 
@@ -77,13 +83,36 @@ function App() {
   return (
     <div className="App">
       <Router>
+        <Navbar bg="light" expand="lg">
+          <Container>
+            <Navbar.Brand as={Link} to="/">
+              Your Logo Here
+            </Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="me-auto">
+                <Nav.Link as={Link} to="/">
+                  Home
+                </Nav.Link>
+              </Nav>
+              <Nav>
+                <Button variant="outline-primary" className="mx-2">
+                  Sign Up
+                </Button>
+                <Button variant="primary">Login</Button>
+              </Nav>
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
+
         <Routes>
-         
           <Route
             path="/"
             element={
               <>
-              <h1>Property Listings</h1>
+                <Container className="my-4">
+                  <h1>Search Properties for Rent</h1>
+                </Container>
                 <Filter
                   data={data}
                   selectedFilters={selectedFilters}
@@ -91,13 +120,15 @@ function App() {
                   appliedFiltersCount={appliedFiltersCount}
                   filteredDataCount={filteredData.length}
                 />
-                <div className="properties">
+                <Container>
+                  <div className="properties">
                     {filteredData.map((property) => (
                       <motion.div key={property.id} initial="hidden" animate="visible" exit="hidden">
                         <Property key={property.id} property={property} />
                       </motion.div>
                     ))}
                   </div>
+                </Container>
               </>
             }
           />
