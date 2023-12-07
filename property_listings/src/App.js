@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import Property from './Property';
 import Filter from './Filter';
-
+import logo from './assets/Logo.png';
 import { motion } from 'framer-motion';
 import { BrowserRouter as Router, Route, Routes,Link } from 'react-router-dom';
 import { Navbar, Container, Nav, Button } from 'react-bootstrap';
@@ -86,7 +86,7 @@ function App() {
         <Navbar bg="light" expand="lg">
           <Container>
             <Navbar.Brand as={Link} to="/">
-              <img src="./assets/Logo.png" alt="logo" width="50" height="50" />
+            <img src={logo} alt="logo" width="50" height="50" />
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">

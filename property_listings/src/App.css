@@ -203,3 +203,65 @@ h1 {
     margin-bottom: 10px;
   }
 }
+/* Add a consistent color scheme */
+body {
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+/* Improved button styling */
+.reset-button,
+.apply-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.reset-button:hover,
+.apply-button:hover {
+  background-color: #0056b3;
+}
+
+/* Add subtle box shadows for depth */
+.property,
+.filter-container,
+.accordion-item,
+
+.card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Improve heading styles */
+h1, h2, h3 {
+  color: #007bff;
+}
+
+/* Responsive adjustments */
+@media only screen and (max-width: 768px) {
+  .properties {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    margin-left: 5%;
+  }
+
+  /* Simplify filter container on smaller screens */
+  .filter-container {
+    width: 100%;
+    min-width: 100%;
+    position: static;
+    border: none;
+    box-shadow: none;
+  }
+
+  /* Full-width buttons on smaller screens */
+  .reset-button,
+  .apply-button {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+}
