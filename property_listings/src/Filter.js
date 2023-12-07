@@ -15,7 +15,7 @@ function Filter({ data, selectedFilters, onFilterChange, filteredDataCount }) {
   uniquePropertyTypes.sort();
 
   const [availableCities, setAvailableCities] = useState([]);
-  
+
   useEffect(() => {
     onFilterChange('availablefrom', dateFilter ? [dateFilter.toISOString()] : []);
   }, [dateFilter, onFilterChange]);
@@ -37,8 +37,13 @@ function Filter({ data, selectedFilters, onFilterChange, filteredDataCount }) {
     setAvailableCities(allCities);
   }, [selectedFilters.location, data]);
 
+  // Calculate the initial price range dynamically
   const minPrice = Math.min(...data.map((item) => item.price));
   const maxPrice = Math.max(...data.map((item) => item.price));
+  const initialPriceRange = [minPrice, maxPrice];
+
+  const [priceValues, setPriceValues] = useState(initialPriceRange);
+  
 
   const handleCheckboxChange = (filterType, isChecked, value) => {
     const updatedFilters = { ...selectedFilters };
@@ -54,18 +59,17 @@ function Filter({ data, selectedFilters, onFilterChange, filteredDataCount }) {
     onFilterChange(filterType, values);
   };
 
-  const [priceValues, setPriceValues] = useState([minPrice, maxPrice]);
-
   const handleResetFilters = () => {
     onFilterChange('location', []);
-    onFilterChange('price', [minPrice, maxPrice]);
+    onFilterChange('price', initialPriceRange);
     onFilterChange('type', []);
-    onFilterChange('availablefrom', []); 
-    
+    onFilterChange('availablefrom', []);
+
     document.getElementById('locationDropdown').selectedIndex = 0;
-    setPriceValues([minPrice, maxPrice]);
-    setDateFilter(null); 
+    setPriceValues(initialPriceRange);
+    setDateFilter(null);
   };
+
 
   return (
     <div className="filter-container">

@@ -86,7 +86,7 @@ function App() {
         <Navbar bg="light" expand="lg">
           <Container>
             <Navbar.Brand as={Link} to="/">
-              Your Logo Here
+              <img src="./assets/Logo.png" alt="logo" width="50" height="50" />
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
@@ -122,11 +122,15 @@ function App() {
                 />
                 <Container>
                   <div className="properties">
-                    {filteredData.map((property) => (
-                      <motion.div key={property.id} initial="hidden" animate="visible" exit="hidden">
-                        <Property key={property.id} property={property} />
-                      </motion.div>
-                    ))}
+                  {loading ? (
+                      <p>Loading...</p>
+                    ) : (
+                      filteredData.map((property) => (
+                        <motion.div key={property.id} initial="hidden" animate="visible" exit="hidden">
+                          <Property key={property.id} property={property} />
+                        </motion.div>
+                      ))
+                    )}
                   </div>
                 </Container>
               </>

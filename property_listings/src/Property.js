@@ -36,8 +36,8 @@ function Property({ property }) {
   return (
     <motion.div className="property" variants={cardVariants} initial="hidden" animate="visible">
       <Link to={`/property/${property.id}`} style={{ textDecoration: 'none' }}>
-        <Card>
-          <Card.Img variant="top" src={'http://www.palmares.lemondeduchiffre.fr/images/joomlart/demo/default.jpg'} alt={property.pic} />
+        <Card className="property-card">
+          <Card.Img variant="top" src={'https://www.wellingmobilityscooters.co.uk/wp-content/uploads/2016/04/dummy-post-vertical-1-thegem-blog-default-large.jpg'} alt={property.pic} />
         
           <Card.Body>
             <Card.Title>{property.name}</Card.Title>
@@ -48,7 +48,7 @@ function Property({ property }) {
             </Card.Text>
           </Card.Body>
           <Card.Footer>
-            <div className="amenities" style={{padding: '10px'}}>
+            <div className="amenities">
               <FontAwesomeIcon icon={faBed} /> {bedrooms.trim() }
               <FontAwesomeIcon icon={faBath} /> {bathrooms.trim()}
               <FontAwesomeIcon icon={faCar} /> {parkingSpaces.trim()}
